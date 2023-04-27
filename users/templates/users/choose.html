@@ -1,0 +1,12 @@
+{% extends "users/base.html" %}
+{% block content %}
+	<header class="masthead d-flex align-items-center">
+		<div class="container px-4 px-lg-5 text-center">
+			<h1 class="mb-1">Register</h1>
+			<h3 class="mb-5"><em>What do you want to register as</em></h3>
+			<a class="btn btn-primary btn-xl" href="{% url 'customer-register-view' %}">Customer</a>
+			<a class="btn btn-primary btn-xl" href="{% url 'vendor-register-view' %}">Vendor</a>
+		</div>
+	</header>
+
+{% endblock content %}
