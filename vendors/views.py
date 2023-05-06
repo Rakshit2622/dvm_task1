@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 
-@method_decorator(login_required , name='dispatch')
+@method_decorator([login_required,customer_only] , name='dispatch')
 class ItemListView(ListView):
 	model = VendorItems
 

@@ -28,12 +28,20 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+              {% if user.is_authenticated and user.is_customer %}
+                <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+              {% endif %}
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              {% if user.is_authenticated %}
+              {% if user.is_authenticated and user.is_customer %}
+                <a class="nav-item nav-link" href="{% url 'add-money' %}">&#8377 {{ user.c_profile.customer_money }}</a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url 'customer-profile' %}">Profile</a>
+              {% elif user.is_authenticated and user.is_vendor %}
+              <a class="nav-item nav-link" href="{% url 'item-create' %}">Add Item</a>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+              <a class="nav-item nav-link" href="{% url 'vendor-profile' %}">Profile</a>
               {% else %}
                 <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>

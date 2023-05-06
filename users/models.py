@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from PIL import Image
 from .managers import UserManager ,VendorManager,CustomerManager
+from django.contrib import admin
 
 class CustomUser(AbstractBaseUser):
 	email = models.EmailField(max_length=250,unique=True)
@@ -56,8 +57,8 @@ class CustomerUser(CustomUser):
 		return super().save(*args,**kwargs)
 
 class VendorProfile(models.Model):
-	vendor_user_profile = models.OneToOneField(VendorUser,on_delete=models.CASCADE)
-	vendor_name = models.CharField(max_length=100, default=str(VendorUser.email).removesuffix('@'))
+	vendor_user_profile = models.OneToOneField(VendorUser, related_name='v_profile' ,on_delete=models.CASCADE)
+	vendor_name = models.CharField(max_length=100,blank=True,null=True)
 	vendor_phone_no = models.PositiveIntegerField(blank=True,null=True)
 
 	def __str__(self):
@@ -65,11 +66,14 @@ class VendorProfile(models.Model):
 
 	def save(self,*args,**kwargs):
 		super().save(*args,**kwargs)
+        
+
+
 
 class CustomerProfile(models.Model):
-	customer_user_profile = models.OneToOneField(CustomerUser,on_delete=models.CASCADE)
+	customer_user_profile = models.OneToOneField(CustomerUser, related_name='c_profile' ,on_delete=models.CASCADE)
 	customer_name = models.CharField(max_length=100)
-	customer_address = models.CharField(max_length=200)
+	customer_address = models.TextField()
 	customer_money = models.PositiveIntegerField(default=0,null=True)
 	customer_image = models.ImageField(default='default.jpeg',upload_to='customer_profile_pics')
 

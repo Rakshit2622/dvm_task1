@@ -8,7 +8,7 @@ class VendorItems(models.Model):
 	item_price = models.PositiveIntegerField()
 	item_description = models.CharField(max_length=400)
 	item_image = models.ImageField(upload_to='vendor_items_pics')
-	item_vendor= models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+	item_vendor= models.ForeignKey(VendorUser,on_delete=models.CASCADE,related_name='vendor_item')
 	item_stock = models.PositiveIntegerField()
 
 	def __str__(self):

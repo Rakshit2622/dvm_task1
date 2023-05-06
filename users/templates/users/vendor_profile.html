@@ -4,9 +4,40 @@
 	<div class="content-section">
 	  <div class="media">
 	    <div class="media-body">
-	      <h2 class="account-heading">{{ VendorUser.name }}</h2>
-	      <p class="text-secondary">dj</p>
+	      <p class="text-secondary">{{ user.email }}</p>
 	    </div>
 	  </div>
+	  	<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class = "border-bottom mb-4">Profile Info</legend>
+				{{form|crispy}}
+			</fieldset>
+			<div class = "form-group">
+				<button class='btn btn-outline-info' type="submit">Update</button>
+			</div>
+		</form>
 	</div>
+	{% for object in object_list %}
+		<section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ object.item_image.url }}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <div class="small mb-1">{{ object.item_vendor.vendorprofile.vendor_name }}</div>
+                        <h1 class="display-5 fw-bolder"><a href="{% url 'item-detail' object.id %}">{{ object.item_title }}</a></h1>
+                        <div class="fs-5 mb-5">
+                            <span class="text-decoration-line-through">&#8377 77</span>
+                            <span>&#8377 {{ object.item_price }}</span>
+                        </div>
+                        <p class="lead">{{ object.item_description }}</p> 
+                        {% if object.item_vendor == user %}
+					    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'item-update' object.id %}">Update</a>
+					    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'item-delete' object.id %}">Delete</a>
+					    {% endif %}       
+                    </div>
+                </div>
+            </div>
+        </section>
+	{% endfor %}
 {% endblock content %}

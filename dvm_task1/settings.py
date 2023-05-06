@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE= [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,5 +132,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MEDIA_ROOT = Path(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'login-redirect'
 LOGIN_URL = 'login'
