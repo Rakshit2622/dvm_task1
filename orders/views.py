@@ -71,7 +71,7 @@ def order(request):
 	quantity_order = cart_instance.quantity
 	total_order = cart_instance.total
 
-	if customer.c_profile.customer_address == None:
+	if customer.c_profile.customer_address == '# Enter Your Address here':
 		messages.error(request,f'Please add your address in the profile section ')
 		return redirect('home')
 	else:

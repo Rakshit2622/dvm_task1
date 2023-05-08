@@ -73,7 +73,7 @@ class VendorProfile(models.Model):
 class CustomerProfile(models.Model):
 	customer_user_profile = models.OneToOneField(CustomerUser, related_name='c_profile' ,on_delete=models.CASCADE)
 	customer_name = models.CharField(max_length=100)
-	customer_address = models.TextField()
+	customer_address = models.TextField(default = '# Enter Your Address here')
 	customer_money = models.PositiveIntegerField(default=0,null=True)
 	customer_image = models.ImageField(default='default.jpeg',upload_to='customer_profile_pics')
 
