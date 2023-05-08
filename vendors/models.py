@@ -5,11 +5,12 @@ from django.urls import reverse
 
 class VendorItems(models.Model):
 	item_title = models.CharField(max_length=100)
-	item_price = models.PositiveIntegerField()
+	item_price = models.FloatField()
 	item_description = models.CharField(max_length=400)
 	item_image = models.ImageField(upload_to='vendor_items_pics')
 	item_vendor= models.ForeignKey(VendorUser,on_delete=models.CASCADE,related_name='vendor_item')
 	item_stock = models.PositiveIntegerField()
+	item_orders = models.PositiveIntegerField(default=0)
 
 	def __str__(self):
 		return self.item_title

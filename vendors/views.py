@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 @method_decorator([login_required,customer_only] , name='dispatch')
 class ItemListView(ListView):
 	model = VendorItems
+	ordering = ['-item_orders']
 
 @method_decorator([login_required,vendor_only] , name='dispatch')
 class ItemCreateView(CreateView):
@@ -50,7 +51,7 @@ class ItemUpdateView(UserPassesTestMixin,UpdateView):
 @method_decorator([login_required,vendor_only], name = 'dispatch')
 class ItemDeleteView(UserPassesTestMixin,DeleteView):
 	model = VendorItems
-	success_url = '/'
+	success_url = 'vendor-profile/'
 
 	def test_func(self):
 		item = self.get_object()

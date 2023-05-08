@@ -34,7 +34,9 @@ class CustomerImageForm(forms.ModelForm):
 		fields = ['customer_image']
 
 class CustomerMoneyForm(forms.ModelForm):
-	add_money = forms.IntegerField(widget=forms.NumberInput)
+	class Meta:
+		model = CustomerProfile
+		fields = ['customer_money']
 	
 
 	

@@ -98,17 +98,15 @@ def login_redirect(request):
 @customer_only
 def add_money(request):
 	if request.method == 'POST':
-		m_form = CustomerMoneyForm(request.POST)
+		m_form = CustomerMoneyForm(request.POST,instance=request.user.c_profile)
 
 		if m_form.is_valid():
-			money_instance = request.user.c_profile.customer_money
-			money_instance += m_form.add_money
-			money_instance.save()
+			m_form.save()
 			messages.success(request , f'Money has been added!')
 			return redirect('home')
 
 	else:
-		m_form = CustomerMoneyForm()
+		m_form = CustomerMoneyForm(instance=request.user.c_profile)
 
 	return render(request,'users/add_money.html',{'form':m_form})
 
