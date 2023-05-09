@@ -1,0 +1,26 @@
+{% extends "users/base.html" %}
+{% block content %}
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    {% for review in reviews %}
+    <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                   <div class="comments-list">
+                       <div class="media">
+                            <a class="media-left" href="#">
+                              <img class="rounded-circle article-img" src="{{ review.customer_review.c_profile.customer_image.url }}">
+                            </a>
+                            <div class="media-body">
+                              <h4 class="media-heading user_name">{{ review.customer_review.c_profile.customer_name }}</h4>
+                              {{ review.review }}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+{% endblock content %}

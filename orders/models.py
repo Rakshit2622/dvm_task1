@@ -25,6 +25,9 @@ class Order(models.Model):
 	address = models.TextField()
 	order_place = models.BooleanField(default=False)
 
-
+class Review(models.Model):
+	review = models.TextField()
+	customer_review = models.ForeignKey(CustomerUser,on_delete=models.CASCADE,related_name='review_customer')
+	item_review = models.ForeignKey(VendorItems,on_delete=models.CASCADE,related_name='item_review')
 
 

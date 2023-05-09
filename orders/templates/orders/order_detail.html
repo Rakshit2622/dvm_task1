@@ -1,0 +1,30 @@
+{% extends "users/base.html" %}
+{% block content %}
+		<section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ object.item_order.item_image.url}}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <div class="small mb-1"><a href="#"></a></div>
+                        <h1 class="display-5 fw-bolder">{{ object.item_order }}</h1>
+                        <div class="fs-5 mb-5">
+                            <span>Quantity - {{ object.quantity_order}}</span>
+                        </div>
+                        <p class="lead">Totol - &#8377 {{ object.total_order}}</p>
+                        <div class="d-flex">
+                           <a href="{% url 'add_to_cart' object.item_order.id %}">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                                <i class="bi-cart-fill me-1"></i>
+                                Add to cart again
+                            </button></a>
+                            <a href="{% url 'create-review' object.item_order.id %}">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                                <i class="bi-cart-fill me-1"></i>
+                                Write Review
+                            </button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock content %}

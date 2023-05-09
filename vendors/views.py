@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin
-
+from orders.models import Review
+from django.shortcuts import get_object_or_404
 
 @method_decorator([login_required,customer_only] , name='dispatch')
 class ItemListView(ListView):
@@ -59,5 +60,15 @@ class ItemDeleteView(UserPassesTestMixin,DeleteView):
 			return True
 		else:
 			False
+
+
+def review_display(request,pk):
+	item = get_object_or_404(VendorItems,pk=pk)
+	reviews = Review.objects.filter(item_review=item)
+	if len(reviews)==0:
+		return render(request,'vendors/no_reviews.html')
+	else:
+		return render(request,'vendors/review_list.html',{'reviews':reviews})
+
 
 

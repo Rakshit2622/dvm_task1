@@ -4,7 +4,7 @@
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col">
-          <p><span class="h2">Previous orders</span><span class="h4"></span></p>
+          <p><span class="h2">Orders for you</span><span class="h4"></span></p>
           <div class="card mb-4">
             <div class="card-body p-4">
               <div class="row align-items-center">
@@ -17,11 +17,6 @@
                 </div>
                 <div class="col-md-2 d-flex justify-content-center">
                   <div>
-                    <p class="small text-muted mb-4 pb-2">Order ID</p>
-                  </div>
-                </div>
-                <div class="col-md-2 d-flex justify-content-center">
-                  <div>
                     <p class="small text-muted mb-4 pb-2">Quantity</p>
                   </div>
                 </div>
@@ -30,6 +25,11 @@
                 <div class="col-md-2 d-flex justify-content-center">
                   <div>
                     <p class="small text-muted mb-4 pb-2">Total</p>
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                  <div>
+                    <p class="small text-muted mb-4 pb-2">Completed</p>
                   </div>
                 </div>
               </div>
@@ -50,11 +50,6 @@
                 </div>
                 <div class="col-md-2 d-flex justify-content-center">
                   <div>
-                    <a href="{% url 'order-detail' order.id %}"><p class="lead fw-normal mb-0">#{{ order.id }}</p></a>
-                  </div>
-                </div>
-                <div class="col-md-2 d-flex justify-content-center">
-                  <div>
                     <p class="lead fw-normal mb-0">{{ order.quantity_order }}</p>
                   </div>
                 </div>
@@ -65,12 +60,21 @@
                   	<p class="lead fw-normal mb-0">&#8377 {{ order.total_order }}</p>
                   </div>
                 </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                  <div>
+                    {% if order.order_place == False %}
+                      <p class="lead fw-normal mb-0">No</p>
+                    {% else %}
+                      <p class="lead fw-normal mb-0">Yes</p>
+                    {% endif %}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           {% endfor %}
           <div class="d-flex justify-content-end">
-            <a href="{% url 'home' %}"><button type="button" class="btn btn-light btn-lg me-2">Back to home</button></a>
+            <a href="{% url 'vendor-profile' %}"><button type="button" class="btn btn-light btn-lg me-2">Back to home</button></a>
           </div>
         </div>
       </div>

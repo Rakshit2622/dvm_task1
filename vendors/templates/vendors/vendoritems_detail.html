@@ -12,6 +12,7 @@
                             <span>&#8377 {{ object.item_price}}</span>
                         </div>
                         <p class="lead">{{ object.item_description }}</p>
+                        {% if user.is_customer %}
                         <div class="d-flex">
                            <a href="{% url 'add_to_cart' object.id %}">
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">
@@ -19,6 +20,11 @@
                                 Add to cart
                             </button></a>
                         </div>
+                        <br><br>
+                        <div class="float-md-left">
+                            <a href="{% url 'item-review' object.id %}"><p>Reviews</p></a>
+                        </div>
+                         {% endif %}
                     </div>
                 </div>
             </div>

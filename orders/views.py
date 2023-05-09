@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import Cart , Order
+from .models import Cart , Order ,Review
 from vendors.models import VendorItems
 from django.contrib.auth.decorators import login_required
-from vendors.decorators import customer_only 
+from vendors.decorators import customer_only , vendor_only
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.views.generic import ListView
+from django.views.generic import DetailView
+from django.utils.decorators import method_decorator
+from .forms import ReviewForm
 
 @login_required
 @customer_only
@@ -98,8 +100,43 @@ def order(request):
 
 	return redirect('cart_list')
 
-class ListView:
-	pass
+@login_required
+@customer_only
+def order_customer_view(request):
+	orders = Order.objects.filter(customer=request.user)
+	return render(request,'orders/customer_orders.html',{'orders':orders})
+
+@login_required
+@vendor_only
+def order_vendor_view(request):
+	orders = Order.objects.filter(vendor=request.user)
+	return render(request,'orders/vendor_orders.html',{'orders':orders})
+
+@method_decorator([login_required,customer_only], name='dispatch')
+class OrderDetailView(DetailView):
+	model = Order
+
+
+def ReviewCreateView(request,pk):
+	if request.method == 'POST':
+		form = ReviewForm(request.POST)
+		item = get_object_or_404(VendorItems , pk=pk)
+
+		if form.is_valid():
+			form.instance.customer_review = request.user
+			form.instance.item_review = item
+			form.save()
+			messages.success(request , f'Reviw successfully posted!')
+			return redirect('home')
+	else:
+		form = ReviewForm()
+
+	context={
+		'form':form
+	}
+
+	return render(request,'orders/review.html',context)
+
 
 
 		
