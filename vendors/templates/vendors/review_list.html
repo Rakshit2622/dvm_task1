@@ -12,8 +12,9 @@
                               <img class="rounded-circle article-img" src="{{ review.customer_review.c_profile.customer_image.url }}">
                             </a>
                             <div class="media-body">
-                              <h4 class="media-heading user_name">{{ review.customer_review.c_profile.customer_name }}</h4>
-                              {{ review.review }}
+                                 <small class="text-muted">Posted on - {{ review.date_time_review|date:"F d, Y" }}</small>
+                                  <h4 class="media-heading user_name">{{ review.customer_review.c_profile.customer_name }}</h4>
+                                  {{ review.review }}
                             </div>
                           </div>
                     </div>

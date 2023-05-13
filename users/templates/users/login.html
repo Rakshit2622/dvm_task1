@@ -1,6 +1,7 @@
 {% extends "users/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% load socialaccount %}
 	<div class ='content-section'>
 		<form method="POST">
 			{% csrf_token %}
@@ -12,6 +13,12 @@
 				<button class='btn btn-outline-info' type="submit">login</button>
 			</div>
 		</form>
+		<button class="btn btn-outline-info">
+        	<a href="{% provider_login_url 'google'%}">
+            	<i class="fab fa-google"></i>
+            	Login with Google
+        	</a>
+    	</button>
 		<div class="border-top pt-3">
 			<small class="text-muted">
 				Need an account<a class = "ml-2" href="#">Sign Up</a>

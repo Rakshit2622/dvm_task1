@@ -7,6 +7,7 @@ from users.models import (
 	VendorProfile,
 	CustomerProfile
 	)
+from django.utils import timezone
 
 class Cart(models.Model):
 	item = models.OneToOneField(VendorItems,on_delete=models.CASCADE,related_name='cart_item',null=True,blank=True)
@@ -24,10 +25,13 @@ class Order(models.Model):
 	total_order = models.FloatField()
 	address = models.TextField()
 	order_place = models.BooleanField(default=False)
+	date_time_order = models.DateTimeField(auto_now_add=True)
+
 
 class Review(models.Model):
 	review = models.TextField()
 	customer_review = models.ForeignKey(CustomerUser,on_delete=models.CASCADE,related_name='review_customer')
 	item_review = models.ForeignKey(VendorItems,on_delete=models.CASCADE,related_name='item_review')
+	date_time_review = models.DateTimeField(auto_now_add=True)
 
 

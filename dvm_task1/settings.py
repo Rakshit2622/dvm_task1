@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from .secrets import s_key
+from .secrets import s_key , m_api_key , m_s_api_key ,db_password
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +43,12 @@ INSTALLED_APPS = [
     'vendors.apps.VendorsConfig',
     'orders.apps.OrdersConfig',
     'crispy_forms',
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE= [
@@ -73,18 +79,47 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
 WSGI_APPLICATION = 'dvm_task1.wsgi.application'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dvm_task', 
+        'USER': 'postgres',
+        'PASSWORD': db_password,
+        'HOST': 'localhost', 
+        'PORT': '5432',
+    }
+}'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': Path(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 # Password validation
@@ -141,3 +176,15 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = 'login-redirect'
 LOGIN_URL = 'login'
+
+SITE_ID = 6
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+
+EMAIL_BACKEND = 'django_mailjet.backends.MailjetBackend'
+MAILJET_API_KEY = m_api_key
+MAILJET_API_SECRET = m_s_api_key

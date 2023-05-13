@@ -15,6 +15,7 @@ urlpatterns=[
 	path('items/<int:pk>/',ItemDetailView.as_view(),name='item-detail'),
 	path('items/<int:pk>/delete',ItemDeleteView.as_view(),name='item-delete'),
 	path('items/<int:pk>/update',ItemUpdateView.as_view(),name='item-update'),
-	path('items/<int:pk>/review',vendor_views.review_display,name='item-review')
+	path('items/<int:pk>/review',vendor_views.review_display,name='item-review'),
+	path('export/excel',vendor_views.print_excel,name='print-excel')
 
 ]

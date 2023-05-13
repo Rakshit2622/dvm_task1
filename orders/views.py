@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from django.utils.decorators import method_decorator
 from .forms import ReviewForm
+from django.core.mail import send_mail
 
 @login_required
 @customer_only
@@ -73,7 +74,7 @@ def order(request):
 	quantity_order = cart_instance.quantity
 	total_order = cart_instance.total
 
-	if customer.c_profile.customer_address == '# Enter Your Address here':
+	if customer.c_profile.customer_address == '# Enter Your Address here' or None:
 		messages.error(request,f'Please add your address in the profile section ')
 		return redirect('home')
 	else:
@@ -91,6 +92,13 @@ def order(request):
 		item_instance.save()
 		messages.success(request,f'Your order has been placed')
 		Order.objects.create(vendor=vendor,customer=customer,item_order=item_order,quantity_order=quantity_order,total_order=total_order,address=address)
+		send_mail(
+			f'Order For You for the item {cart_instance.item}',
+			f'You have an order for the item {cart_instance.item} :\nQuantity-{cart_instance.quantity}\nTotal bill amount-{cart_instance.total}\nCustomer Address- {customer.c_profile.customer_address}',
+			"f20220471@pilani.bits-pilani.ac.in",
+			[f'{cart_instance.vendor}'],
+			fail_silently=False,
+			)
 		cart_instance.vendor = None
 		cart_instance.item = None
 		cart_instance.total = 0

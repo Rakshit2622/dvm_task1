@@ -9,4 +9,7 @@ urlpatterns=[
 	path('customer-profile/',users_views.customer_profile,name='customer-profile'),
 	path('login-redirect/',users_views.login_redirect,name='login-redirect'),
 	path('add-money/',users_views.add_money,name='add-money'),
+	path('google-login-redirect/',users_views.google_login_redirect,name='google-login-redirect'),
+	path('make-vendor/',users_views.make_vendor,name='make-vendor'),
+	path('make-customer/',users_views.make_customer,name='make-customer'),
 ]

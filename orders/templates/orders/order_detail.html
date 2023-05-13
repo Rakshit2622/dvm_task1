@@ -9,6 +9,8 @@
                         <h1 class="display-5 fw-bolder">{{ object.item_order }}</h1>
                         <div class="fs-5 mb-5">
                             <span>Quantity - {{ object.quantity_order}}</span>
+                            <br>
+                            <span>Placed on- {{ object.date_time_order|date:"F d, Y" }}</span>
                         </div>
                         <p class="lead">Totol - &#8377 {{ object.total_order}}</p>
                         <div class="d-flex">

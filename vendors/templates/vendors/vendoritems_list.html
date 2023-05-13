@@ -12,10 +12,10 @@
                             <span class="text-decoration-line-through">&#8377 77</span>
                             <span>&#8377 {{ object.item_price }}</span>
                         </div>
-                        {% if object.item_stock == 0 %}
-                            <p class="lead" style="color: E8310A">Item not in stock </p>
-                        {% endif %}
                         <p class="lead">{{ object.item_description }}</p>
+                        {% if object.item_stock == 0 %}
+                            <p class="text-danger">Item not in stock</p>
+                        {% endif %}
                         <div class="d-flex">
                             <a href="{% url 'add_to_cart' object.id %}">
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">

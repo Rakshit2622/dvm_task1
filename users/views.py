@@ -1,5 +1,5 @@
 from django.shortcuts import render ,redirect
-from .models import CustomUser,VendorUser,CustomerUser,VendorProfile
+from .models import CustomUser,VendorUser,CustomerUser,VendorProfile , CustomerProfile
 from django.contrib import messages
 from .forms import (
 	VendorRegisterForm,
@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from vendors.models import VendorItems
 from django.utils.decorators import method_decorator
+from orders.models import Cart
 
 
 def vendor_register(request):
@@ -91,8 +92,11 @@ def customer_profile(request):
 def login_redirect(request):
 	if request.user.is_vendor and request.user.is_active :
 		return redirect('vendor-profile')
+		messages.success(request , f'Successfully signed in as {request.user}')
 	elif request.user.is_customer and request.user.is_active :
 		return redirect('home')
+	elif request.user.is_vendor == False and request.user.is_customer == False:
+		return redirect('google-login-redirect')
 
 @login_required
 @customer_only
@@ -109,6 +113,37 @@ def add_money(request):
 		m_form = CustomerMoneyForm(instance=request.user.c_profile)
 
 	return render(request,'users/add_money.html',{'form':m_form})
+
+@login_required
+def google_login_redirect(request):
+	return render(request,'users/google_login_redirect.html')
+
+@login_required
+def make_vendor(request):
+	if request.user.is_vendor == False and request.user.is_customer == False:
+		user_instance = request.user
+		user_instance.is_vendor = True
+		user_instance.save()
+		VendorProfile.objects.create(vendor_user_profile=request.user)
+		return redirect('vendor-profile')
+	else:
+		return redirect('vendor-profile')
+
+
+@login_required
+def make_customer(request):
+	if request.user.is_vendor == False and request.user.is_customer == False:
+		user_instance = request.user
+		user_instance.is_customer = True
+		user_instance.save()
+		CustomerProfile.objects.create(customer_user_profile=request.user)
+		Cart.objects.create(customer=request.user)
+		return redirect('home')
+	else:
+		return redirect('home')
+
+
+
 
 
 

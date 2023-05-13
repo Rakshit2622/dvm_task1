@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin
-from orders.models import Review
+from orders.models import Review ,Order
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+import xlwt
 
 @method_decorator([login_required,customer_only] , name='dispatch')
 class ItemListView(ListView):
@@ -61,7 +63,7 @@ class ItemDeleteView(UserPassesTestMixin,DeleteView):
 		else:
 			False
 
-
+@login_required
 def review_display(request,pk):
 	item = get_object_or_404(VendorItems,pk=pk)
 	reviews = Review.objects.filter(item_review=item)
@@ -69,6 +71,40 @@ def review_display(request,pk):
 		return render(request,'vendors/no_reviews.html')
 	else:
 		return render(request,'vendors/review_list.html',{'reviews':reviews})
+
+@login_required
+@vendor_only
+def print_excel(request):
+	vendor=request.user
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = f'attachment; filename={vendor}_orders.xls'
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet(f'{vendor.v_profile.vendor_name}_orders')
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	columns = ['Customer', 'Item', 'Quantity', 'Total' ]
+
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)  
+
+
+	font_style = xlwt.XFStyle()
+
+	rows = Order.objects.filter(vendor=request.user).values_list('customer__email', 'item_order__item_title', 'quantity_order', 'total_order')
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			ws.write(row_num, col_num, row[col_num], font_style)
+
+	wb.save(response)
+    
+	return response
+
 
 
 
