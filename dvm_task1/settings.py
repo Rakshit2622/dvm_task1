@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'django.contrib.sites',
+    'import_export',
 ]
 
 MIDDLEWARE= [
@@ -177,7 +178,7 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'login-redirect'
 LOGIN_URL = 'login'
 
-SITE_ID = 6
+SITE_ID = 7
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True

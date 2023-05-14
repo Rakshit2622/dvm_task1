@@ -1,5 +1,6 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm
+from django.core.validators import MinValueValidator
 
 from .models import CustomUser, VendorUser, CustomerUser, VendorProfile , CustomerProfile
 
@@ -33,10 +34,10 @@ class CustomerImageForm(forms.ModelForm):
 		model = CustomerProfile
 		fields = ['customer_image']
 
-class CustomerMoneyForm(forms.ModelForm):
-	class Meta:
-		model = CustomerProfile
-		fields = ['customer_money']
+class CustomerMoneyForm(forms.Form):
+	add_money = forms.IntegerField(validators=[MinValueValidator(limit_value=1)])
+
+
 	
 
 	

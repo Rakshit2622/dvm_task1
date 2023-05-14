@@ -12,10 +12,14 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 import xlwt
 
-@method_decorator([login_required,customer_only] , name='dispatch')
-class ItemListView(ListView):
-	model = VendorItems
-	ordering = ['-item_orders']
+@login_required
+@customer_only
+def ItemListView(request):
+	items = VendorItems.objects.filter(is_listed=True)
+	context = {'object_list':items}
+	return render(request,'vendors/vendoritems_list.html',context)
+
+
 
 @method_decorator([login_required,vendor_only] , name='dispatch')
 class ItemCreateView(CreateView):
@@ -51,17 +55,13 @@ class ItemUpdateView(UserPassesTestMixin,UpdateView):
 			False
 
 
-@method_decorator([login_required,vendor_only], name = 'dispatch')
-class ItemDeleteView(UserPassesTestMixin,DeleteView):
-	model = VendorItems
-	success_url = 'vendor-profile/'
-
-	def test_func(self):
-		item = self.get_object()
-		if self.request.user == item.item_vendor:
-			return True
-		else:
-			False
+@login_required
+@vendor_only
+def ItemDeleteView(request,pk):
+	item_instance = get_object_or_404(VendorItems , pk=pk)
+	item_instance.is_listed = False
+	item_instance.save()
+	return redirect('vendor-profile')
 
 @login_required
 def review_display(request,pk):

@@ -63,7 +63,7 @@ def vendor_profile(request):
 
 	context={
 		'form':v_form,
-		'object_list':VendorItems.objects.filter(item_vendor=request.user)
+		'object_list':VendorItems.objects.filter(item_vendor=request.user,is_listed=True)
 	}
 
 	return render(request,'users/vendor_profile.html',context)
@@ -73,7 +73,7 @@ def vendor_profile(request):
 def customer_profile(request):
 	if request.method == 'POST':
 		c_form = CustomerUpdateForm(request.POST,instance=request.user.c_profile)
-		i_form = CustomerImageForm(request.POST,request.FILES)
+		i_form = CustomerImageForm(request.POST,request.FILES,instance=request.user.c_profile)
 		if c_form.is_valid() and i_form.is_valid() :
 			c_form.save()
 			i_form.save(commit=False)
@@ -102,15 +102,16 @@ def login_redirect(request):
 @customer_only
 def add_money(request):
 	if request.method == 'POST':
-		m_form = CustomerMoneyForm(request.POST,instance=request.user.c_profile)
+		m_form = CustomerMoneyForm(request.POST)
 
 		if m_form.is_valid():
-			m_form.save()
+			request.user.c_profile.customer_money += m_form.cleaned_data['add_money']
+			request.user.c_profile.save()
 			messages.success(request , f'Money has been added!')
 			return redirect('home')
 
 	else:
-		m_form = CustomerMoneyForm(instance=request.user.c_profile)
+		m_form = CustomerMoneyForm()
 
 	return render(request,'users/add_money.html',{'form':m_form})
 

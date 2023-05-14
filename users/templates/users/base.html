@@ -37,6 +37,7 @@
               {% if user.is_authenticated and user.is_customer %}
                 <a class="nav-item nav-link" href="{% url 'add-money' %}">&#8377 {{ user.c_profile.customer_money }}</a>
                 <a class="nav-item nav-link" href="{% url 'cart_list' %}">Cart</a>
+                <a class="nav-item nav-link" href="{% url 'wishlist_list' %}">Wishlist</a>
                 <a class="nav-item nav-link" href="{% url 'previous_orders' %}">Previous Orders</a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                 <a class="nav-item nav-link" href="{% url 'customer-profile' %}">Profile</a>

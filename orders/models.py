@@ -10,12 +10,23 @@ from users.models import (
 from django.utils import timezone
 
 class Cart(models.Model):
-	item = models.OneToOneField(VendorItems,on_delete=models.CASCADE,related_name='cart_item',null=True,blank=True)
-	vendor = models.OneToOneField(VendorUser,on_delete=models.CASCADE,related_name='cart_vendor',null=True,blank=True)
 	customer = models.OneToOneField(CustomerUser,on_delete=models.CASCADE,related_name='cart_customer')
+	bill_amt = models.PositiveIntegerField(default=0)
+	def get_bill_amt(self):
+		return sum([(x.total) for x in self.cart_end.all()])
+
+
+class Cart_Items(models.Model):
+	item = models.ForeignKey(VendorItems,on_delete=models.CASCADE,related_name='cart_item')
+	vendor = models.ForeignKey(VendorUser,on_delete=models.CASCADE,related_name='cart_items_vendor')
+	customer = models.ForeignKey(CustomerUser,on_delete=models.CASCADE,related_name='cart_items_customer')
 	quantity = models.PositiveIntegerField(default=0)
 	total = models.FloatField(null=True,blank=True)
-	full = models.BooleanField(default=False)
+	cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_end')
+
+	def get_absolute_url(self):
+		return reverse('home',kwargs={'pk':self.pk})
+
 
 class Order(models.Model):
 	vendor = models.ForeignKey(VendorUser,on_delete=models.CASCADE,related_name='order_vendor')
@@ -33,5 +44,9 @@ class Review(models.Model):
 	customer_review = models.ForeignKey(CustomerUser,on_delete=models.CASCADE,related_name='review_customer')
 	item_review = models.ForeignKey(VendorItems,on_delete=models.CASCADE,related_name='item_review')
 	date_time_review = models.DateTimeField(auto_now_add=True)
+
+class Wishlist(models.Model):
+	wishlist_item = models.ForeignKey(VendorItems,on_delete=models.CASCADE,related_name='wishlist_item')
+	customer = models.ForeignKey(CustomerUser,on_delete=models.CASCADE,related_name='wishlist_customer')
 
 

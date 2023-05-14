@@ -11,6 +11,7 @@ class VendorItems(models.Model):
 	item_vendor= models.ForeignKey(VendorUser,on_delete=models.CASCADE,related_name='vendor_item')
 	item_stock = models.PositiveIntegerField()
 	item_orders = models.PositiveIntegerField(default=0)
+	is_listed = models.BooleanField(default=True)
 
 	def __str__(self):
 		return self.item_title
