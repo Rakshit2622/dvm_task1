@@ -8,8 +8,12 @@
                 <div class="col-md-8">
                    <div class="comments-list">
                        <div class="media">
-                            <a class="media-left" href="#">
-                              <img class="rounded-circle article-img" src="{{ review.customer_review.c_profile.customer_image.url }}">
+                        <a class="media-left" href="#"></a>
+                            {% if review.customer_review.c_profile.customer_image %}
+                                <img class="rounded-circle account-img" src="{{ review.customer_review.c_profile.customer_image.url }}">
+                            {% else %}
+                                <img class="rounded-circle account-img" src="https://i.imgur.com/R1Jmjgb.jpeg">
+                            {% endif %}
                             </a>
                             <div class="media-body">
                                  <small class="text-muted">Posted on - {{ review.date_time_review|date:"F d, Y" }}</small>

@@ -5,26 +5,39 @@
                 <div class="row gx-4 gx-lg-5 align-items-center">
                     <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ object.item_image.url }}" alt="..." /></div>
                     <div class="col-md-6">
-                        <div class="small mb-1"><a href="#">{{ object.item_vendor.vendorprofile.vendor_name }}</a></div>
                         <h1 class="display-5 fw-bolder">{{ object.item_title }}</h1>
                         <div class="fs-5 mb-5">
                             <span class="text-decoration-line-through">&#8377 77</span>
                             <span>&#8377 {{ object.item_price}}</span>
+                            {% if object.item_vendor.v_profile.vendor_name %}
+                            <div>
+                                Vendor Name-
+                                {{ object.item_vendor.v_profile.vendor_name }}
+                            </div>
+                            {% endif %}
                         </div>
                         <p class="lead">{{ object.item_description }}</p>
                         {% if user.is_customer %}
                         <div class="d-flex">
-                           <a href="{% url 'add_to_cart' object.id %}">
+                            <a href="{% url 'add_to_cart' object.id %}">
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">
                                 <i class="bi-cart-fill me-1"></i>
                                 Add to cart
                             </button></a>
                         </div>
-                        {% endif %}
-                        <br><br>
-                        <div class="float-md-left">
-                            <a href="{% url 'item-review' object.id %}"><p>Reviews</p></a>
+                        <div>
+                            <a href="{% url 'item-review' object.id %}">
+                                <p>Reviews</p>
+                            </a>
                         </div>
+                        {% endif %}
+                        {% if user.is_vendor %}
+                            <div class="d-flex">
+                                <a href="{% url 'item-review' object.id %}">
+                                <p>Reviews</p>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

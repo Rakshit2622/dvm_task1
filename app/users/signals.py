@@ -6,7 +6,6 @@ from orders.models import Cart
 
 @receiver(post_save, sender=VendorUser, weak=False)
 def create_vendor_profile(sender, instance, created, **kwargs):
-    print("hi")
     if created:
         VendorProfile.objects.create(vendor_user_profile=instance)
 

@@ -85,7 +85,7 @@ def cart_list(request):
 @login_required
 @customer_only
 def remove_from_cart(request):
-    Cart_Items.objects.all().delete()
+    Cart_Items.objects.filter(customer=request.user).delete()
     return redirect("home")
 
 
@@ -138,7 +138,7 @@ def order(request):
                 fail_silently=False,
             )
             cart_item_instance.delete()
-            return redirect("home")
+        return redirect("home")
 
 
 @login_required
@@ -189,10 +189,11 @@ def add_to_wishlist(request, pk):
     if Wishlist.objects.filter(customer=customer):
         if str(item) in list(
             Wishlist.objects.filter(customer=request.user).values_list(
-                "item__item_title", flat=True
+                "wishlist_item__item_title", flat=True
             )
         ):
             messages.error(request, "Item already in the wishlist")
+            return redirect("home")
         else:
             Wishlist.objects.create(wishlist_item=item, customer=customer)
             messages.success(request, "Item added in Wishlist")
@@ -227,7 +228,7 @@ def wishlist_list(request):
 @login_required
 @customer_only
 def remove_wishlist(request):
-    Wishlist.objects.all().delete()
+    Wishlist.objects.filter(customer=request.user).delete()
     messages.success(request, "Wishlist has been deleted")
     return redirect("home")
 
